@@ -23,9 +23,18 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/nprogress/nprogress.css",
+              "./node_modules/animate.css/animate.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./node_modules/fastclick/lib/fastclick.js",
+              "./node_modules/nprogress/nprogress.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -71,13 +80,14 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": [],
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": [
             ]
           }
         },
