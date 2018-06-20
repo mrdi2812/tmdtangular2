@@ -8,6 +8,7 @@ import { approutes } from './app.router';
 import {LoginModule} from './login/login.module';
 import {MainModule} from './main/main.module';
 import { UtilityService } from './core/service/utility.service';
+import { AuthenGuard } from './core/guards/authen.guard';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { UtilityService } from './core/service/utility.service';
     BrowserModule,FormsModule,
     HttpModule,RouterModule.forRoot(approutes)
   ],
-  providers: [UtilityService],
+  providers: [UtilityService,AuthenGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
