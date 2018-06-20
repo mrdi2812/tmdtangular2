@@ -327,7 +327,7 @@ body .container.body .right_col {
 
 body {
   color: #73879C;
-  background: #2A3F54;
+  background: #F7F7F7;
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -3976,8 +3976,8 @@ ul.verticle_bars li {
 
 .alert-danger,
 .alert-error {
-  color: #E9EDEF;
-  background-color: rgba(231, 76, 60, 0.88);
+  color: #A94442;
+  background-color: #E9EDEF;
   border-color: rgba(231, 76, 60, 0.88); }
 
 .ui-pnotify.dark .ui-pnotify-container {
