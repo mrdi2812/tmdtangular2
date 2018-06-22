@@ -5,7 +5,7 @@
   <div class="login_wrapper">
     <div class="animate form login_form">
       <section class="login_content">
-        <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm">
+        <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
           <h1>ĐĂNG NHẬP</h1>
           <div >
             <input type="text" class="form-control" name="username"  #username="ngModel" [(ngModel)]="model.username" required />

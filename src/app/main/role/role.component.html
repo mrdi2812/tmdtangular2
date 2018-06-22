@@ -1,3 +1,93 @@
-<p>
-  role works!
-</p>
+<div class="page-title">
+  <div class="title_left">
+    <h3>Danh sách quyền hệ thống</h3>
+  </div>
+  <div class="title_right">
+    <div class="col-md-7 col-sm-5 col-xs-12 form-group pull-right top_search">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Nhập nội dung cần tìm kiếm...">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button">Tìm kiếm!</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <div class="nav navbar-right panel_toolbox">
+          <button class="btn btn-success" (click)="showAddModal()">Thêm mới</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tên quyền</th>
+            <th>Mô tả</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let role of roles">
+            <td style="width: 40%">{{role.Name}}</td>
+            <td style="width: 40%">{{role.Description}}</td>
+            <td style="width: 20%"><button class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-edit"></i> Cập nhật</button>
+                <button class="btn btn-danger" (click)="deleteItem(role.Id)"><i class="fa fa-trash-o"></i> Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" [totalItems]="totalItems" [(ngModel)] = "pageIndex" (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+      </pagination>
+      <pre class="card card-block card-header mb-3">Trang hiện tại: {{pageIndex}}</pre>
+    </div>
+  </div>
+</div>
+<!--Mở modal thêm sửa xóa-->
+<div bsModal #modalRoleEdit="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Thêm/Sửa quyền</h4>
+        <button type="button" class="close pull-right" (click)="hideAddModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form class="form-horizontal form-label-left" (ngSubmit)="f.form.valid && saveChange(f.valid)" #f="ngForm" *ngIf="modeldata">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên quyền <span class="required">*</span>
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input id="name" name="Name" [(ngModel)]="modeldata.Name" #Name="ngModel" required minlength="3" class="form-control col-md-9 col-sm-9 col-xs-12" type="text">
+                  <small [hidden]="!f.submitted || Name.valid" class="alert text-danger">Vui lòng nhập ít nhất 3 ký tự</small>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả <span class="required">*</span>
+                  </label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <textarea id="description" name="Description" [(ngModel)]="modeldata.Description" #Description="ngModel" required class="form-control col-md-9 col-sm-9 col-xs-12" type="text"></textarea>
+                    <small [hidden]="!f.submitted  || Description.valid" class="alert text-danger">Vui lòng nhập mô tả quyền</small>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-3">
+                        <button  class="btn btn-primary" (click)="hideAddModal()">Hủy bỏ</button>
+                        <button [disabled]="!f.form.valid" class="btn btn-success">Cập nhật</button>
+                      </div>
+                </div>
+         </form>
+      </div>
+    </div>
+  </div>
+</div>
