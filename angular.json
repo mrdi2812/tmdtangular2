@@ -25,7 +25,6 @@
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/font-awesome/css/font-awesome.css",
-              "./node_modules/nprogress/nprogress.css",
               "./node_modules/animate.css/animate.css",
               "./node_modules/alertifyjs/build/css/alertify.css",
               "./node_modules/alertifyjs/build/css/themes/default.css",
@@ -35,8 +34,9 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/fastclick/lib/fastclick.js",
-              "./node_modules/nprogress/nprogress.js",
-              "./node_modules/alertifyjs/build/alertify.js"
+              "./node_modules/alertifyjs/build/alertify.js",
+              "./node_modules/moment/moment.js"
+
             ]
           },
           "configurations": {

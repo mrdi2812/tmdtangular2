@@ -29,9 +29,12 @@
     "gentelella": "^1.4.0",
     "icheck": "^1.0.2",
     "jquery": "^3.2.1",
+    "moment": "^2.22.2",
+    "ng2-daterangepicker": "^2.0.12",
     "ngx-bootstrap": "^3.0.1",
-    "nprogress": "^0.2.0",
+    "ngx-daterangepicker-material": "^1.1.2",
     "popper.js": "^1.14.3",
+    "primeng": "^6.0.0",
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
     "zone.js": "^0.8.26"

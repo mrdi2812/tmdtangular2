@@ -17,7 +17,6 @@ export class RoleComponent implements OnInit {
   public roles: any[];
   public totalItems: number;
   public totalPage: number;
-  loading = false;
   public modeldata: any;
   @ViewChild('modalRoleEdit') modalRoleEdit: ModalDirective;
   constructor(private _dataService: DataService, private _notificationService: NotificationService) {
@@ -88,4 +87,5 @@ export class RoleComponent implements OnInit {
       this.loadData();
     });
   }
+
 }
