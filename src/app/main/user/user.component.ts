@@ -22,12 +22,11 @@ export class UserComponent implements OnInit {
   public totalPage: number;
   public modeldata: any;
   public roles: any[];
-  public LinkBase  = SystemConstants.BASE_API;
+  public LinkBase = SystemConstants.BASE_API;
   @ViewChild('modalUserEdit') modalUserEdit: ModalDirective;
   @ViewChild('avatar') avatar;
   constructor(private _dataService: DataService, private _notificationService: NotificationService,
-  private _uploadService : UploadService)
-  {
+    private _uploadService: UploadService) {
 
   }
 
@@ -36,6 +35,7 @@ export class UserComponent implements OnInit {
     this.loadRoles();
 
   }
+
   loadData() {
     this._dataService.get('/api/appUser/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
       .subscribe((response: any) => {
@@ -55,27 +55,7 @@ export class UserComponent implements OnInit {
     alwaysShowCalendars: false,
     singleDatePicker: true
   };
-  // onItemSelect(item: any) {
-  //   console.log(item);
-  //   console.log(this.myRoles);
-  //   for(let item of this.myRoles){
-  //     this.itemArray.push(item.itemName);
-  //   }
 
-  // }
-  // onItemDeSelect(item: any) {
-  //   console.log(item);
-  //   console.log(this.myRoles);
-  // }
-  // onSelectAll(items: any) {
-  //   console.log(items);
-  // }
-  // onDeSelectAll(items: any) {
-  //   console.log(items);
-  // }
-  // compareFn(c1: any, c2: any): boolean {
-  //   return c1 && c2 ? c1.id === c2.id : c1 === c2;
-  // }
   loadRoles() {
     this._dataService.get('/api/appRole/getlistall').subscribe((response: any[]) => {
       this.allRoles = [];
@@ -88,6 +68,7 @@ export class UserComponent implements OnInit {
     this._dataService.get('/api/appUser/detail/' + id)
       .subscribe((response: any) => {
         this.modeldata = response;
+        //this.modeldata.BirthDay = moment(new Date(this.modeldata.BirthDay)).format('DD/MM/YYYY');
       });
   }
   showAddModal(): void {
@@ -101,22 +82,22 @@ export class UserComponent implements OnInit {
     this.getDetailUser(id);
     this.modalUserEdit.show();
   }
-  saveChange(valid :boolean) {
-    if(valid){
+  saveChange(valid: boolean) {
+    if (valid) {
       let file = this.avatar.nativeElement;
-      if(file.files.length){
-        this._uploadService.postWithFile('/api/upload/saveImage',null,file.files).then((imageUrl:string)=>{
+      if (file.files.length) {
+        this._uploadService.postWithFile('/api/upload/saveImage', null, file.files).then((imageUrl: string) => {
           this.modeldata.Avatar = imageUrl;
-        }).then(()=>{
+        }).then(() => {
           this.saveData();
         });
       }
-      else{
+      else {
         this.saveData();
       }
     }
   }
-  saveData(){
+  saveData() {
     if (this.modeldata.Id == undefined) {
       this._dataService.post('/api/appUser/add', JSON.stringify(this.modeldata)).subscribe((response: any) => {
         this.loadData();
@@ -147,5 +128,9 @@ export class UserComponent implements OnInit {
   }
   public selectGender(event) {
     this.modeldata.Gender = event.target.value
+  }
+  public selectedDate(value: any) {
+    console.log(value);
+    this.modeldata.BirthDay = moment(value.end._d).format('DD/MM/YYYY');
   }
 }

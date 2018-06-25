@@ -28,6 +28,7 @@
               "./node_modules/animate.css/animate.css",
               "./node_modules/alertifyjs/build/css/alertify.css",
               "./node_modules/alertifyjs/build/css/themes/default.css",
+              "./node_modules/angular-tree-component/dist/angular-tree-component.css",
               "src/styles.css"
             ],
             "scripts": [
