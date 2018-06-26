@@ -12,13 +12,16 @@ import { MessageContstants } from '../../core/common/message.constants';
 })
 export class FunctionComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
+  @ViewChild('modalAddEditPermission') modalAddEditPermission: ModalDirective;
 @ViewChild(TreeComponent)
 private treeFunction: TreeComponent;
 
 public _functionHierachy: any[];
 public _functions: any[];
+public _permission:any[];
 public modeldata: any;
 public filter: string = '';
+public functionId :string;
   constructor(private dataService:DataService,private utilityService :UtilityService,private notificationService :NotificationService) { }
 
   ngOnInit() {
@@ -43,9 +46,31 @@ public filter: string = '';
         this.modeldata = response;
       });
   }
+  getPermission(id:any){
+    this.dataService.get('/api/appRole/getAllPermission?functionId='+id).subscribe((response:any[])=>{
+      this._permission = response;
+      this.functionId = id;
+    },error=>this.dataService.handleError(error));
+  }
+  savePermission(valid:boolean,_permission:any[]){
+    if (valid) {
+      var data = {
+        Permissions: this._permission,
+        FunctionId: this.functionId
+      }
+      this.dataService.post('/api/appRole/savePermission', JSON.stringify(data)).subscribe((response: any) => {
+        this.notificationService.printSuccessMessage(response);
+        this.modalAddEditPermission.hide();
+      }, error => this.dataService.handleError(error));
+    }
+  }
   showEditModal(id: any): void {
     this.getDetailFunction(id);
     this.modalAddEdit.show();
+  }
+  showEditPermission(id:any):void{
+    this.getPermission(id);
+    this.modalAddEditPermission.show();
   }
   saveChange(valid:boolean){
     if (this.modeldata.Id == undefined) {

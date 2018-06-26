@@ -13,6 +13,9 @@ declare var moment: any;
 })
 export class UserComponent implements OnInit {
   public allRoles = [];
+  public listRoles = [];
+  public myRoles = [];
+  dropdownSettings = {};
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -33,9 +36,28 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     this.loadRoles();
-
+    this.dropdownSettings = {
+      singleSelection: false,
+      text:"Chọn quyền",
+      selectAllText:'Chọn tất cả',
+      unSelectAllText:'Bỏ chọn tất cả',
+      enableSearchFilter: true,
+      classes:"myclass custom-class"
+    };
   }
-
+//   onItemSelect(item:any){
+//     console.log(item);
+// }
+// OnItemDeSelect(item:any){
+//     console.log(item);
+//     console.log(this.myRoles);
+// }
+// onSelectAll(items: any){
+//     console.log(items);
+// }
+// onDeSelectAll(items: any){
+//     console.log(items);
+// }
   loadData() {
     this._dataService.get('/api/appUser/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
       .subscribe((response: any) => {
@@ -61,6 +83,7 @@ export class UserComponent implements OnInit {
       this.allRoles = [];
       for (let role of response) {
         this.allRoles.push({ Id: role.Id, Name: role.Name });
+        this.listRoles.push({ id: role.Id, itemName: role.Name });
       }
     }, error => this._dataService.handleError(error));
   }

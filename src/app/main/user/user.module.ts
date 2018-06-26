@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { UploadService } from '../../core/service/upload.service';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 const userroutes : Routes = [
   {path:'',redirectTo:'index',pathMatch:'full'},
   {path:'index',component:UserComponent}
@@ -20,7 +21,7 @@ const userroutes : Routes = [
     FormsModule,
     ModalModule,
     Daterangepicker,
-
+    AngularMultiSelectModule
   ],
   providers:[DataService,UploadService],
   declarations: [UserComponent]
