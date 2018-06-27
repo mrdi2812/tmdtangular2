@@ -10,11 +10,14 @@ import { AuthenService } from '../core/service/authen.service';
 import { UtilityService } from '../core/service/utility.service';
 import { DataService } from '../core/service/data.service';
 import { FormsModule } from '@angular/forms';
+import { SidebarMenuComponent } from '../shared/sidebar-menu/sidebar-menu.component';
+import { TopMenuComponent } from '../shared/top-menu/top-menu.component';
+
 @NgModule({
   imports: [
     CommonModule,RouterModule.forChild(mainroutes),FormsModule
   ],
   providers:[AuthenService,UtilityService,DataService],
-  declarations: [MainComponent]
+  declarations: [MainComponent,SidebarMenuComponent,TopMenuComponent]
 })
 export class MainModule { }
