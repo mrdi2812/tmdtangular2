@@ -5,6 +5,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/service/notification.service';
 import { MessageContstants } from '../../core/common/message.constants';
 import { UploadService } from '../../core/service/upload.service';
+import { AuthenService } from '../../core/service/authen.service';
+import { UtilityService } from '../../core/service/utility.service';
 declare var moment: any;
 @Component({
   selector: 'app-user',
@@ -29,35 +31,37 @@ export class UserComponent implements OnInit {
   @ViewChild('modalUserEdit') modalUserEdit: ModalDirective;
   @ViewChild('avatar') avatar;
   constructor(private _dataService: DataService, private _notificationService: NotificationService,
-    private _uploadService: UploadService) {
+    private _uploadService: UploadService, public authenService: AuthenService, private utilityService: UtilityService) {
+    if (authenService.checkAccess('USER') == false) {
+      utilityService.navigateToLogin();
+    }
 
   }
-
   ngOnInit() {
     this.loadData();
     this.loadRoles();
     this.dropdownSettings = {
       singleSelection: false,
-      text:"Chọn quyền",
-      selectAllText:'Chọn tất cả',
-      unSelectAllText:'Bỏ chọn tất cả',
+      text: "Chọn quyền",
+      selectAllText: 'Chọn tất cả',
+      unSelectAllText: 'Bỏ chọn tất cả',
       enableSearchFilter: true,
-      classes:"myclass custom-class"
+      classes: "myclass custom-class"
     };
   }
-//   onItemSelect(item:any){
-//     console.log(item);
-// }
-// OnItemDeSelect(item:any){
-//     console.log(item);
-//     console.log(this.myRoles);
-// }
-// onSelectAll(items: any){
-//     console.log(items);
-// }
-// onDeSelectAll(items: any){
-//     console.log(items);
-// }
+  //   onItemSelect(item:any){
+  //     console.log(item);
+  // }
+  // OnItemDeSelect(item:any){
+  //     console.log(item);
+  //     console.log(this.myRoles);
+  // }
+  // onSelectAll(items: any){
+  //     console.log(items);
+  // }
+  // onDeSelectAll(items: any){
+  //     console.log(items);
+  // }
   loadData() {
     this._dataService.get('/api/appUser/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
       .subscribe((response: any) => {

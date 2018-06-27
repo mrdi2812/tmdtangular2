@@ -11,7 +11,7 @@
           <!-- menu profile quick info -->
           <div class="profile">
             <div class="profile_pic">
-              <img src="{{data.avatar}}" alt="..." class="img-circle profile_img">
+              <img [src]="LinkBase + data.avatar" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Xin chào,</span>
@@ -141,7 +141,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="{{data.avatar}}" alt="">{{data.fullName}}
+                  <img [src]="LinkBase + data.avatar" alt="">{{data.fullName}}
                   <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">

@@ -28,17 +28,17 @@
         <ng-template #treeNodeTemplate let-node let-index="index">
           <span>{{ node.data.Name }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-          <button class="btn btn-xs btn-success" (click)="showEditPermission(node.data.ID)">
+          <button class="btn btn-xs btn-success"  (click)="showEditPermission(node.data.ID)">
             <i class="fa fa-lock" aria-hidden="true"></i>
           </button>
           &nbsp;
 
-            <button class="btn btn-xs btn-primary" (click)="showEditModal(node.data.ID)">
+            <button class="btn btn-xs btn-primary"  (click)="showEditModal(node.data.ID)">
               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
             </button>
             &nbsp;
 
-            <button class="btn btn-xs btn-danger" (click)="deleteItem(node.data.ID)">
+            <button class="btn btn-xs btn-danger"  (click)="deleteItem(node.data.ID)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
         </ng-template>

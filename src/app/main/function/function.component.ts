@@ -1,10 +1,12 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeComponent } from 'angular-tree-component';
 import { DataService } from '../../core/service/data.service';
 import { UtilityService } from '../../core/service/utility.service';
 import { NotificationService } from '../../core/service/notification.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { MessageContstants } from '../../core/common/message.constants';
+import { AuthenService } from '../../core/service/authen.service';
+
 @Component({
   selector: 'app-function',
   templateUrl: './function.component.html',
@@ -13,25 +15,28 @@ import { MessageContstants } from '../../core/common/message.constants';
 export class FunctionComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
   @ViewChild('modalAddEditPermission') modalAddEditPermission: ModalDirective;
-@ViewChild(TreeComponent)
-private treeFunction: TreeComponent;
+  @ViewChild(TreeComponent)
+  private treeFunction: TreeComponent;
 
-public _functionHierachy: any[];
-public _functions: any[];
-public _permission:any[];
-public modeldata: any;
-public filter: string = '';
-public functionId :string;
-  constructor(private dataService:DataService,private utilityService :UtilityService,private notificationService :NotificationService) { }
+  public _functionHierachy: any[];
+  public _functions: any[];
+  public _permission: any[];
+  public modeldata: any;
+  public filter: string = '';
+  public functionId: string;
+  constructor(private dataService: DataService, private utilityService: UtilityService,
+    private notificationService: NotificationService, public authenService: AuthenService) {
+
+  }
 
   ngOnInit() {
     this.loadData();
   }
-  loadData(){
-    this.dataService.get('/api/function/getall?filter='+this.filter).subscribe((response:any[])=>{
-      this._functions = response.filter(x=>x.ParentId==null);
+  loadData() {
+    this.dataService.get('/api/function/getall?filter=' + this.filter).subscribe((response: any[]) => {
+      this._functions = response.filter(x => x.ParentId == null);
       this._functionHierachy = this.utilityService.Unflatten(response);
-    },error=>this.dataService.handleError(error));
+    }, error => this.dataService.handleError(error));
   }
   showAddModal(): void {
     this.modeldata = {};
@@ -46,13 +51,13 @@ public functionId :string;
         this.modeldata = response;
       });
   }
-  getPermission(id:any){
-    this.dataService.get('/api/appRole/getAllPermission?functionId='+id).subscribe((response:any[])=>{
+  getPermission(id: any) {
+    this.dataService.get('/api/appRole/getAllPermission?functionId=' + id).subscribe((response: any[]) => {
       this._permission = response;
       this.functionId = id;
-    },error=>this.dataService.handleError(error));
+    }, error => this.dataService.handleError(error));
   }
-  savePermission(valid:boolean,_permission:any[]){
+  savePermission(valid: boolean, _permission: any[]) {
     if (valid) {
       var data = {
         Permissions: this._permission,
@@ -68,11 +73,11 @@ public functionId :string;
     this.getDetailFunction(id);
     this.modalAddEdit.show();
   }
-  showEditPermission(id:any):void{
+  showEditPermission(id: any): void {
     this.getPermission(id);
     this.modalAddEditPermission.show();
   }
-  saveChange(valid:boolean){
+  saveChange(valid: boolean) {
     if (this.modeldata.Id == undefined) {
       this.dataService.post('/api/function/add', JSON.stringify(this.modeldata)).subscribe((response: any) => {
         this.loadData();

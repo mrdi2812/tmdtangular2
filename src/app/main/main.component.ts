@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UtilityService } from '../core/service/utility.service';
 import { LoggedInUser } from '../core/domain/loggin.user';
 import { SystemConstants } from '../core/common/system.constants';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -12,6 +13,7 @@ import { SystemConstants } from '../core/common/system.constants';
 })
 export class MainComponent implements OnInit {
   data : LoggedInUser;
+  public LinkBase = SystemConstants.BASE_API;
   constructor(private authenService : AuthenService,private router: Router,private utilityService :UtilityService) { }
 
   ngOnInit() {
