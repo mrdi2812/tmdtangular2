@@ -13,6 +13,9 @@ import { AuthenService } from '../../core/service/authen.service';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
+  // Khai báo biến cho phần PRODUCT
+  @ViewChild('modalAddEditModal') modalAddEditModal: ModalDirective
+  @ViewChild('thumbnailImage') thumbnailImage;
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -23,12 +26,16 @@ export class ProductComponent implements OnInit {
   public totalPage: number;
   public modeldata: any;
   public productCategories: any[];
-  public checkItems :any[];
+  public checkItems: any[];
   public LinkBase = SystemConstants.BASE_API;
-  @ViewChild('modalAddEditModal') modalAddEditModal: ModalDirective
-  @ViewChild('thumbnailImage') thumbnailImage;
+
+  //Khai báo biến cho phần quản lý ảnh sản phẩm
+  @ViewChild('imageAddEditModal') imageAddEditModal: ModalDirective
+  @ViewChild('pathImage') pathImage;
+  public imagemodel: any;
+  public productImage: any[] = [];
   constructor(private _dataService: DataService, private _notificationService: NotificationService,
-    private _uploadService: UploadService, private utilityService: UtilityService,public authenService:AuthenService) { }
+    private _uploadService: UploadService, private utilityService: UtilityService, public authenService: AuthenService) { }
 
   ngOnInit() {
     this.loadData();
@@ -40,8 +47,8 @@ export class ProductComponent implements OnInit {
   loadData() {
     this._dataService.get('/api/product/getall?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&keyword=' + this.filter + '&categoryId=' + this.filtercategoryId)
       .subscribe((response: any) => {
-          this.products = response;
-          this.totalItems = response.length;
+        this.products = response;
+        this.totalItems = response.length;
       });
   }
   pageChanged(event: any): void {
@@ -61,33 +68,28 @@ export class ProductComponent implements OnInit {
         this.modeldata = response;
       });
   }
-  resetfilter(){
-    this.filter='';
-    this.filtercategoryId=null;
+  resetfilter() {
+    this.filter = '';
+    this.filtercategoryId = null;
     this.loadData();
   }
   showAddModal(): void {
-    this.modeldata = { Content: ''};
+    this.modeldata = { Content: '' };
     this.modalAddEditModal.show();
   }
   showEditModal(id: any): void {
     this.getDetailProduct(id);
     this.modalAddEditModal.show();
   }
-  showImageManage(id:any){
 
-  }
-  showQuantityManage(id:any){
-
-  }
-  createAlias(){
+  createAlias() {
     this.modeldata.Alias = this.utilityService.MakeSeoTitle(this.modeldata.Name);
   }
   saveChange(valid: boolean) {
     if (valid) {
       let file = this.thumbnailImage.nativeElement;
       if (file.files.length) {
-        this._uploadService.postWithFile('//api/upload/saveImage?type=product', null, file.files).then((imageUrl: string) => {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, file.files).then((imageUrl: string) => {
           this.modeldata.ThumbnailImage = imageUrl;
         }).then(() => {
           this.saveData();
@@ -130,23 +132,63 @@ export class ProductComponent implements OnInit {
   public keyupHandlerContentFunction(e: any) {
     this.modeldata.Content = e;
   }
-  deleteMuti(){
-    this.checkItems = this.products.filter(x=>x.Checked==true);
-    if(this.checkItems.length>0){
+  deleteMuti() {
+    this.checkItems = this.products.filter(x => x.Checked == true);
+    if (this.checkItems.length > 0) {
       var listItem = [];
-      for(var i=0;i<this.checkItems.length;i++){
+      for (var i = 0; i < this.checkItems.length; i++) {
         listItem.push(this.checkItems[i]["ID"]);
       }
-      this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () =>{
-        this._dataService.delete('/api/product/deletemulti','checkedProducts',JSON.stringify(listItem)).subscribe((response: any) => {
+      this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => {
+        this._dataService.delete('/api/product/deletemulti', 'checkedProducts', JSON.stringify(listItem)).subscribe((response: any) => {
           this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
           this.loadData();
-        },error=>this._dataService.handleError(error))
+        }, error => this._dataService.handleError(error))
       });
     }
-    else{
+    else {
       this._notificationService.printErrorMessage(MessageContstants.NO_RECORD_MSG);
     }
 
   }
+  /*Quản lý ảnh sản phẩm*/
+  loadProductImage(id: number) {
+    this._dataService.get('/api/productImage/getall?productId=' + id).subscribe((response: any[]) => {
+      this.productImage = response;
+    }, error => this._dataService.handleError(error));
+  }
+  showImageManage(id: number) {
+    this.imagemodel = {};
+    this.imagemodel.ProductId = id;
+    this.loadProductImage(id);
+    this.imageAddEditModal.show();
+  }
+  saveImageProduct(valid: boolean) {
+    if (valid) {
+      let file = this.pathImage.nativeElement;
+      if (file.files.length) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, file.files).then((imageUrl: string) => {
+          this.imagemodel.Path = imageUrl;
+          this._dataService.post('/api/productImage/add', JSON.stringify(this.imagemodel)).subscribe((response: any) => {
+            this.loadProductImage(this.imagemodel.ProductId);
+            this._notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+          }, error => {
+            this._dataService.handleError(error);
+          });
+        });
+      }
+    }
+  }
+  deleteImage(id: number) {
+    this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => {
+      this._dataService.delete('/api/productImage/delete', 'id', id.toString()).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+        this.loadProductImage(this.imagemodel.ProductId);
+      }, error => this._dataService.handleError(error));
+    });
+  }
+  /*Quản lý số lượng sản phẩm*/
+  // showQuantityManage(id:any){
+
+  // }
 }

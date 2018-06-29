@@ -1,7 +1,9 @@
 @charset "UTF-8";
 .left_col {
   background: #2A3F54; }
-
+.fixmagin{
+  margin-top: 23px;
+}
 .nav-sm .container.body .col-md-3.left_col {
   width: 70px;
   padding: 0;

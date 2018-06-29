@@ -33,24 +33,24 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th></th>
+            <th>Chọn</th>
             <th>Tên sản phẩm</th>
             <th>Danh mục</th>
             <th>Hình ảnh</th>
             <th>Người tạo</th>
             <th>Ngày tạo</th>
-            <th></th>
+            <th>Trạng thái</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let product of products">
-              <td>
-                  <div class="checkbox">
-                    <label>
-                        <input type="checkbox" [(ngModel)]="product.Checked" [name]="product.ID" [ngModelOptions]="{standalone: true}">
-                    </label>
-                  </div>
-                </td>
+            <td>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="product.Checked" [name]="product.ID" [ngModelOptions]="{standalone: true}">
+                </label>
+              </div>
+            </td>
             <td>{{product.Name}}</td>
             <td>{{product.ProductCategory.Name}}</td>
             <td>
@@ -58,12 +58,14 @@
             </td>
             <td>{{product.CreatedBy}}</td>
             <td>{{product.CreatedDate| date:'dd/MM/yyyy'}}</td>
-            <td>
-              <button class="btn btn-default" *ngIf="authenService.hasPermission('PRODUCT','update')" data-toggle="tooltip" data-placement="top" title="Quản lý ảnh" (click)="showImageManage(item.ID)">
+            <td style="width: 20%">
+              <button class="btn btn-default" *ngIf="authenService.hasPermission('PRODUCT','update')" data-toggle="tooltip" data-placement="top"
+                title="Quản lý ảnh" (click)="showImageManage(product.ID)">
                 <i class="fa fa-file-image-o" aria-hidden="true"></i>
               </button>
 
-              <button class="btn btn-default" *ngIf="authenService.hasPermission('PRODUCT','update')" data-toggle="tooltip" data-placement="top" title="Quản lý số lượng" (click)="showQuantityManage(item.ID)">
+              <button class="btn btn-default" *ngIf="authenService.hasPermission('PRODUCT','update')" data-toggle="tooltip" data-placement="top"
+                title="Quản lý số lượng" (click)="showQuantityManage(product.ID)">
                 <i class="fa fa-bandcamp" aria-hidden="true"></i>
               </button>
 
@@ -108,16 +110,16 @@
               <a data-toggle="tab" href="#more-info">Thông tin thêm</a>
             </li>
           </ul>
-        <div class="tab-content">
-          <div id="basic" class="tab-pane fade in active">
-            <h3>Thông tin bắt buộc</h3>
-            <div class="form-group">
+          <div class="tab-content">
+            <div id="basic" class="tab-pane fade in active">
+              <h3>Thông tin bắt buộc</h3>
+              <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên sản phẩm
-                    <span class="required" class="alert-danger">*</span>
+                  <span class="required" class="alert-danger">*</span>
                 </label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input id="name" name="Name" (keypress)="createAlias()"  [(ngModel)]="modeldata.Name" #Name="ngModel" required minlength="3" class="form-control col-md-9 col-sm-9 col-xs-12"
-                    type="text">
+                  <input id="name" name="Name" (keypress)="createAlias()" [(ngModel)]="modeldata.Name" #Name="ngModel" required minlength="3"
+                    class="form-control col-md-9 col-sm-9 col-xs-12" type="text">
                   <small [hidden]="!f.submitted || Name.valid" class="alert text-danger">Vui lòng nhập ít nhất 3 ký tự</small>
                 </div>
               </div>
@@ -131,143 +133,198 @@
                 </div>
               </div>
               <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha
-                      <span class="required" class="alert-danger">*</span>
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control"  [ngModelOptions]="{standalone: true}" required
-                          [(ngModel)]="modeldata.CategoryID">
-                          <option value="">Danh mục sản phẩm</option>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha
+                  <span class="required" class="alert-danger">*</span>
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <select class="form-control" [ngModelOptions]="{standalone: true}" required [(ngModel)]="modeldata.CategoryID">
+                    <option value="">Danh mục sản phẩm</option>
                     <option *ngFor="let product of productCategories" [ngValue]="product.ID">{{product.Name}}</option>
                   </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Ảnh</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" #thumbnailImage name="thumbnailImage" class="form-control">
+                  <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
+                  <input type="hidden" [(ngModel)]="modeldata.ThumbnailImage" name="avatarUrl" />
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="modeldata.ThumbnailImage">
+                  <img [src]="LinkBase + modeldata.ThumbnailImage" width="128" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá nhập
+                  <span class="required" class="alert-danger">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input id="Price" name="Price" [(ngModel)]="modeldata.Price" #Price="ngModel" required class="form-control col-md-9 col-sm-9 col-xs-12"
+                    type="number" />
+                  <small [hidden]="!f.submitted || Price.valid" class="alert text-danger">Vui lòng nhập giá nhập</small>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" [(ngModel)]="modeldata.IncludedVAT" name="includedVAT" #includedVAT="ngModel" /> Bao gồm VAT
+                    </label>
                   </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Ảnh</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="file" #thumbnailImage name="thumbnailImage" class="form-control">
-                      <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
-                      <input type="hidden" [(ngModel)]="modeldata.ThumbnailImage" name="avatarUrl" />
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="modeldata.ThumbnailImage">
-                      <img [src]="LinkBase + modeldata.ThumbnailImage" width="128" />
-                    </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá bán
+                  <span class="required" class="alert-danger">*</span>
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input name="originalPrice" [(ngModel)]="modeldata.OriginalPrice" required #originalPrice="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
+                    type="number">
+                  <small [hidden]="!f.submitted || originalPrice.valid" class="alert text-danger">Vui lòng nhập giá bán</small>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá khuyến mại
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input name="promotionPrice" [(ngModel)]="modeldata.PromotionPrice" #promotionPrice="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
+                    type="number">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" [(ngModel)]="modeldata.Status" name="status" #status="ngModel"> Kích hoạt
+                    </label>
                   </div>
-                  <div class="form-group">
-                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá nhập
-                        <span class="required" class="alert-danger">*</span>
-                      </label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="Price" name="Price" [(ngModel)]="modeldata.Price" #Price="ngModel" required class="form-control col-md-9 col-sm-9 col-xs-12"
-                          type="number"/>
-                          <small [hidden]="!f.submitted || Price.valid" class="alert text-danger">Vui lòng nhập giá nhập</small>
-                      </div>
-                      <div class="col-md-3 col-sm-3 col-xs-12">
-                          <div class="checkbox">
-                              <label>
-                             <input type="checkbox" [(ngModel)]="modeldata.IncludedVAT" name="includedVAT" #includedVAT="ngModel" /> Bao gồm VAT
-                              </label>
-                            </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá bán
-                          <span class="required" class="alert-danger">*</span>
-                        </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="originalPrice" [(ngModel)]="modeldata.OriginalPrice" required #originalPrice="ngModel"  class="form-control col-md-9 col-sm-9 col-xs-12"
-                            type="number">
-                            <small [hidden]="!f.submitted || originalPrice.valid" class="alert text-danger">Vui lòng nhập giá bán</small>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá khuyến mại
-                          </label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input name="promotionPrice" [(ngModel)]="modeldata.PromotionPrice" #promotionPrice="ngModel"  class="form-control col-md-9 col-sm-9 col-xs-12"
-                              type="number">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-                              <div class="checkbox">
-                                <label>
-                               <input type="checkbox" [(ngModel)]="modeldata.Status" name="status" #status="ngModel"> Kích hoạt
-                            </label>
-                              </div>
-                              <div class="checkbox">
-                                <label>
-                               <input type="checkbox" [(ngModel)]="modeldata.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
-                            </label>
-                              </div>
-                              <div class="checkbox">
-                                <label>
-                               <input type="checkbox" [(ngModel)]="modeldata.HotFlag" name="hotFlag" #status="ngModel"> Sản phẩm nổi bật
-                            </label>
-                              </div>
-                            </div>
-                          </div>
-          </div>
-          <div id="more-info" class="tab-pane fade">
-            <h3>Thông tin thêm</h3>
-            <div class="form-group">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" [(ngModel)]="modeldata.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" [(ngModel)]="modeldata.HotFlag" name="hotFlag" #status="ngModel"> Sản phẩm nổi bật
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="more-info" class="tab-pane fade">
+              <h3>Thông tin thêm</h3>
+              <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả
                 </label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input  name="Description" [(ngModel)]="modeldata.Description" #Description="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
+                  <input name="Description" [(ngModel)]="modeldata.Description" #Description="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
                     type="text">
                 </div>
               </div>
               <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Bảo hành (tháng)
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input  name="Warranty" [(ngModel)]="modeldata.Warranty" #Warranty="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
-                      type="number">
-                  </div>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Bảo hành (tháng)
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input name="Warranty" [(ngModel)]="modeldata.Warranty" #Warranty="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
+                    type="number">
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Chi tiết sản phẩm
-                    </label>
-                    <div class="col-md-9 col-sm-9 col-xs-12">
-                      <app-simple-tiny [elementId]="'my-editor-id'" [content]="modeldata.Content" (onEditorKeyup)="keyupHandlerContentFunction($event)"></app-simple-tiny>
-                    </div>
-                  </div>
+              </div>
               <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Từ khóa tìm kiếm
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input  name="MetaKeyword" [(ngModel)]="modeldata.MetaKeyword" #MetaKeyword="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
-                      type="text">
-                  </div>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Chi tiết sản phẩm
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <app-simple-tiny [elementId]="'my-editor-id'" [content]="modeldata.Content" (onEditorKeyup)="keyupHandlerContentFunction($event)"></app-simple-tiny>
                 </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Từ khóa tìm kiếm
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input name="MetaKeyword" [(ngModel)]="modeldata.MetaKeyword" #MetaKeyword="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
+                    type="text">
+                </div>
+              </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả SEO
                 </label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                    <textarea  name="MetaDescription" [(ngModel)]="modeldata.MetaDescription" #MetaDescription="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
+                  <textarea name="MetaDescription" [(ngModel)]="modeldata.MetaDescription" #MetaDescription="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
                     type="text"></textarea>
                 </div>
               </div>
               <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags tìm kiếm
-                  </label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input  name="Tags" [(ngModel)]="modeldata.Tags" #Tags="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12"
-                      type="text">
-                  </div>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags tìm kiếm
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input name="Tags" [(ngModel)]="modeldata.Tags" #Tags="ngModel" class="form-control col-md-9 col-sm-9 col-xs-12" type="text">
                 </div>
-            <div class="clearfix"></div>
-            <div class="form-group">
-              <div class="col-md-6 col-md-offset-3">
-                <button type="button" class="btn btn-primary" (click)="modalAddEditModal.hide()">Hủy bỏ</button>
-                <button type="submit" [disabled]="!f.form.valid" class="btn btn-success">Cập nhật</button>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-md-offset-3">
+                  <button type="button" class="btn btn-primary" (click)="modalAddEditModal.hide()">Hủy bỏ</button>
+                  <button type="submit" [disabled]="!f.form.valid" class="btn btn-success">Cập nhật</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal quản lý ảnh sản phẩm-->
+<div bsModal #imageAddEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Thêm/Sửa sản phẩm</h4>
+        <button type="button" class="close pull-right" (click)="imageAddEditModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left" novalidate #fImage="ngForm" (ngSubmit)="fImage.form.valid && saveImageProduct(fImage.valid)"
+          *ngIf="imagemodel">
+          <div class="form-group row">
+            <div class="col-xs-4">
+              <label>Ảnh</label>
+              <input type="file" required #pathImage name="pathImage" class="form-control">
+              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
+              <input type="hidden" [(ngModel)]="imagemodel.Path" name="avatarUrl" />
+              <input type="hidden" [(ngModel)]="imagemodel.ProductId" name="parentId" />
+            </div>
+            <div class="col-xs-4">
+              <label>Mô tả</label>
+              <input name="caption" [(ngModel)]="imagemodel.Caption" #caption="ngModel" class="form-control col-md-3 col-sm-3 col-xs-12"
+                type="text">
+            </div>
+            <div class="col-xs-3 form-group">
+              <button class="btn btn-success fixmagin" type="submit" [disabled]="!fImage.valid">Thêm mới</button>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="ln_solid"></div>
+          <table class="table table-bordered" *ngIf="productImage.length>0&&productImage">
+            <thead>
+              <tr>
+                  <th>Ảnh</th>
+                  <th>Mô tả</th>
+                  <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let image of productImage">
+                <td style="width: 45%;"><img [src]="LinkBase + image.Path" width="128" /></td>
+                <td style="width: 45%;">{{image.Caption}}</td>
+                <td style="width: 10%;">
+                  <button class="btn btn-danger" (click)="deleteImage(image.ID)">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
       </div>
     </div>
   </div>
