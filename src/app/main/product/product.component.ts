@@ -23,6 +23,7 @@ export class ProductComponent implements OnInit {
   public totalPage: number;
   public modeldata: any;
   public productCategories: any[];
+  public checkItems :any[];
   public LinkBase = SystemConstants.BASE_API;
   @ViewChild('modalAddEditModal') modalAddEditModal: ModalDirective
   @ViewChild('thumbnailImage') thumbnailImage;
@@ -128,5 +129,24 @@ export class ProductComponent implements OnInit {
   }
   public keyupHandlerContentFunction(e: any) {
     this.modeldata.Content = e;
+  }
+  deleteMuti(){
+    this.checkItems = this.products.filter(x=>x.Checked==true);
+    if(this.checkItems.length>0){
+      var listItem = [];
+      for(var i=0;i<this.checkItems.length;i++){
+        listItem.push(this.checkItems[i]["ID"]);
+      }
+      this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () =>{
+        this._dataService.delete('/api/product/deletemulti','checkedProducts',JSON.stringify(listItem)).subscribe((response: any) => {
+          this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+          this.loadData();
+        },error=>this._dataService.handleError(error))
+      });
+    }
+    else{
+      this._notificationService.printErrorMessage(MessageContstants.NO_RECORD_MSG);
+    }
+
   }
 }
