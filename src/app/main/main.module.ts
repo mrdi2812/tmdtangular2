@@ -12,10 +12,10 @@ import { DataService } from '../core/service/data.service';
 import { FormsModule } from '@angular/forms';
 import { SidebarMenuComponent } from '../shared/sidebar-menu/sidebar-menu.component';
 import { TopMenuComponent } from '../shared/top-menu/top-menu.component';
-
 @NgModule({
   imports: [
-    CommonModule,RouterModule.forChild(mainroutes),FormsModule
+    CommonModule,
+    RouterModule.forChild(mainroutes),FormsModule,
   ],
   providers:[AuthenService,UtilityService,DataService],
   declarations: [MainComponent,SidebarMenuComponent,TopMenuComponent]

@@ -21,7 +21,7 @@ import { ModalModule } from 'ngx-bootstrap';
     HttpModule,
     RouterModule.forRoot(approutes),
     PaginationModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
   ],
   providers: [AuthenGuard,DataService],
   bootstrap: [AppComponent]

@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
+    "@tinymce/tinymce-angular": "^2.0.0",
     "alertifyjs": "^1.11.1",
     "angular-tree-component": "^7.2.0",
     "angular2-multiselect-dropdown": "^2.9.0",
@@ -39,6 +40,8 @@
     "primeng": "^6.0.0",
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
+    "tinymce": "^4.7.13",
+    "typings": "^2.1.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
