@@ -329,3 +329,69 @@
     </div>
   </div>
 </div>
+<!--Modal quản lý số lượng size sản phẩm-->
+<div bsModal #quantityAddEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Thêm/Sửa sản phẩm</h4>
+        <button type="button" class="close pull-right" (click)="quantityAddEditModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left" novalidate #quantityForm="ngForm" (ngSubmit)="quantityForm.form.valid && saveQuantityProduct(quantityForm.valid)"
+          *ngIf="quantityModel">
+          <div class="form-group row">
+            <div class="col-xs-3">
+              <label>Kích thước</label>
+              <select class="form-control" [(ngModel)]="quantityModel.SizeId" [ngModelOptions]="{standalone: true}">
+                <option value="">-- Chọn danh mục --</option>
+                <option *ngFor="let size of sizes" [ngValue]="size.ID">{{size.Name}}</option>
+              </select>
+            </div>
+            <div class="col-xs-3">
+              <label>Màu sắc</label>
+              <select class="form-control" [(ngModel)]="quantityModel.ColorId" [ngModelOptions]="{standalone: true}">
+                <option value="">-- Chọn danh mục --</option>
+                <option *ngFor="let color of colors" [ngValue]="color.ID">{{color.Name}}</option>
+              </select>
+            </div>
+
+            <div class="col-xs-3">
+              <label>Số lượng</label>
+              <input type="number" [(ngModel)]="quantityModel.Quantity" name="quantity" #quantity="ngModel" class="form-control" />
+            </div>
+            <div class="col-xs-3 form-group">
+              <button class="btn btn-success fixmagin" type="submit" [disabled]="!quantityForm.valid">Thêm mới</button>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="ln_solid"></div>
+        </form>
+        <table class="table table-bordered" *ngIf="productQuantitys&& productQuantitys.length>0" >
+          <thead>
+            <tr>
+                <th>Kích thước</th>
+                <th>Màu sắc</th>
+                <td>Số lượng</td>
+                <th>#</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of productQuantitys">
+              <td>{{item.Size.Name}}</td>
+              <td>{{item.Color.Name}}</td>
+              <td>{{item.Quantity}}</td>
+              <td style="width: 10%;">
+                <button class="btn btn-danger" (click)="deleteQuantity(item.ProductId,item.ColorId,item.SizeId)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

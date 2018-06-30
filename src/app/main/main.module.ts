@@ -6,6 +6,7 @@ import { mainroutes } from './main.router';
 import{HomeModule} from './home/home.module';
 import {UserModule} from './user/user.module';
 import{RoleModule} from './role/role.module';
+import{ProductModule} from './product/product.module';
 import { AuthenService } from '../core/service/authen.service';
 import { UtilityService } from '../core/service/utility.service';
 import { DataService } from '../core/service/data.service';

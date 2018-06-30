@@ -34,6 +34,14 @@ export class ProductComponent implements OnInit {
   @ViewChild('pathImage') pathImage;
   public imagemodel: any;
   public productImage: any[] = [];
+  //Khai báo biến cho phần quản lý số lượng sản phẩm
+  @ViewChild('quantityAddEditModal') quantityAddEditModal : ModalDirective
+  public quantityModel: any;
+  public productQuantitys: any[] = [];
+  public colors: any;
+  public sizes :any;
+  public sizeId: number = null;
+  public colorId: number = null;
   constructor(private _dataService: DataService, private _notificationService: NotificationService,
     private _uploadService: UploadService, private utilityService: UtilityService, public authenService: AuthenService) { }
 
@@ -58,7 +66,7 @@ export class ProductComponent implements OnInit {
   }
 
   loadProductCategory() {
-    this._dataService.get('/api/productCategory/getallhierachy').subscribe((response: any[]) => {
+    this._dataService.get('/api/productCategory/getallhierachy').subscribe((response: any) => {
       this.productCategories = response;
     }, error => this._dataService.handleError(error));
   }
@@ -188,7 +196,48 @@ export class ProductComponent implements OnInit {
     });
   }
   /*Quản lý số lượng sản phẩm*/
-  // showQuantityManage(id:any){
-
-  // }
+  loadColors(){
+    this._dataService.get('/api/productQuantity/getcolors?filter=' + this.filter)
+    .subscribe((response: any[]) => {
+      this.colors = response;
+    });
+  }
+  loadSizes(){
+    this._dataService.get('/api/productQuantity/getsizes?filter=' + this.filter)
+      .subscribe((response: any[]) => {
+        this.sizes = response;
+      });
+  }
+  loadProductQuantity(id: number) {
+    this._dataService.get('/api/productQuantity/getall?productId=' +id+'&sizeId='+this.sizeId+'&colorId='+this.colorId).subscribe((response: any[]) => {
+      this.productQuantitys = response;
+    }, error => this._dataService.handleError(error));
+  }
+  showQuantityManage(id:any){
+    this.quantityModel = {};
+    this.quantityModel.ProductId = id;
+    this.loadColors();
+    this.loadSizes();
+    this.loadProductQuantity(this.quantityModel.ProductId);
+    this.quantityAddEditModal.show();
+  }
+  saveQuantityProduct(valid :boolean){
+    if(valid){
+      this._dataService.post('/api/productQuantity/add', JSON.stringify(this.quantityModel)).subscribe((response: any) => {
+        this.loadProductQuantity(this.quantityModel.ProductId);
+        this._notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+      }, error => {
+        this._dataService.handleError(error);
+      });
+    }
+  }
+  deleteQuantity(productId: number, colorId: string, sizeId: string){
+    this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => {
+      var parameters = { "productId": productId, "sizeId": sizeId, "colorId": colorId };
+      this._dataService.deleteMuti('/api/productQuantity/delete',parameters).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+        this.loadProductQuantity(this.quantityModel.ProductId);
+      }, error => this._dataService.handleError(error));
+    });
+  }
 }

@@ -6,4 +6,6 @@ export class MessageContstants {
     public static UPDATED_OK_MSG = "Cập nhật thành công";
     public static DELETED_OK_MSG = "Xóa thành công";
     public static NO_RECORD_MSG = "Không có bản ghi nào được chọn";
+    public static FORBIDDEN = "Bạn không có quyền truy cập";
+
 }

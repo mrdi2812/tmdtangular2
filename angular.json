@@ -29,6 +29,8 @@
               "./node_modules/alertifyjs/build/css/alertify.css",
               "./node_modules/alertifyjs/build/css/themes/default.css",
               "./node_modules/angular-tree-component/dist/angular-tree-component.css",
+              "./node_modules/gentelella/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css",
+              "./node_modules/gentelella/vendors/cropper/dist/cropper.min.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -55,7 +57,9 @@
               "./node_modules/tinymce/plugins/media/plugin.js",
               "./node_modules/tinymce/plugins/preview/plugin.js",
               "./node_modules/tinymce/plugins/wordcount/plugin.js",
-              "./node_modules/tinymce/plugins/textcolor/plugin.js"
+              "./node_modules/tinymce/plugins/textcolor/plugin.js",
+              "./node_modules/gentelella/vendors/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js",
+              "./node_modules/gentelella/vendors/cropper/dist/cropper.min.js"
             ]
           },
           "configurations": {

@@ -14,13 +14,14 @@ export class SidebarMenuComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.get('/api/function/getlisthierarchy').subscribe((response:any[])=>{
-      this.functions = response.sort((s1,s2)=>{
+         response.sort((s1,s2)=>{
         if(s1.DisplayOrder>s2.DisplayOrder)
            return 1;
         if(s1.DisplayOrder<s2.DisplayOrder)
           return -1;
         return 0;
       });
+      this.functions = response;
     },error=>this.dataService.handleError(error));
   }
   logout(){
