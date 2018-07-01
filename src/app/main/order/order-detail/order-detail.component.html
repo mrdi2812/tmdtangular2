@@ -1,0 +1,136 @@
+<div class="page-title">
+    <div class="title_left">
+      <h3>Chi tiết đơn hàng</h3>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_title">
+          <button class="btn btn-primary" (click)="goBack()">Quay lại</button>
+          <button class="btn btn-success" (click)="exportToExcel()">Xuất ra Excel</button>
+        </div>
+    <div class="x_panel">
+      <form class="form-horizontal form-label-left" (ngSubmit)="f.form.valid && saveChange(f.valid)" #f="ngForm" *ngIf="modeldata">
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên khách hàng</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" #customerName="ngModel" [(ngModel)]="modeldata.CustomerName" required minlength="3" name="customerName"
+              class="form-control">
+            <small [hidden]="customerName.valid || (customerName.pristine && !f.submitted)" class="text-danger">
+              Bạn phải nhập tên ít nhất 3 ký tự
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Địa chỉ</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <input name="address" [(ngModel)]="modeldata.CustomerAddress" #address="ngModel" required class="form-control col-md-9 col-sm-9 col-xs-12"
+              type="text">
+            <small [hidden]="address.valid || (address.pristine && !f.submitted)" class="text-danger">
+              Bạn phải nhập địa chỉ
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="modeldata.CustomerEmail"
+              required name="email" class="form-control">
+            <small [hidden]="email.valid || (email.pristine && !f.submitted)" class="text-danger">
+              Bạn phải nhập email
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Điện thoại</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" #phonenumber="ngModel" [(ngModel)]="modeldata.CustomerMobile" required name="phonenumber" class="form-control">
+            <small [hidden]="phonenumber.valid || (phonenumber.pristine && !f.submitted)" class="text-danger">
+              Bạn phải nhập số điện thoại
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Ghi chú</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" #message="ngModel" [(ngModel)]="modeldata.CustomerMessage" required name="message" class="form-control">
+            <small [hidden]="message.valid || (message.pristine && !f.submitted)" class="text-danger">
+              Bạn phải nhập ghi chú
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Phương thức thanh toán</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <select class="form-control" #paymentMethod="ngModel" name="paymentMethod" [(ngModel)]="modeldata.PaymentMethod">
+              <option value="">--Chọn phương thức tahnh toán--</option>
+              <option value="CASH">Tiền mặt</option>
+              <option value="BANKING">Chuyển khoản</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái thanh toán</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="modeldata.PaymentStatus">
+              <option value="">--Tất cả--</option>
+              <option value="PAID">Đã thanh toán</option>
+              <option value="UNPAID">Chưa thành toán</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="modeldata.Status" name="status" #status="ngModel"> Hợp lệ
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-10 col-sm-12 col-xs-12">
+          </div>
+          <div class="col-md-2 col-sm-12 col-xs-12">
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="ln_solid"></div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Tên sản phẩm</th>
+              <th>Màu sắc</th>
+              <th>Size</th>
+              <th>Số lượng</th>
+              <th>Giá tiền</th>
+              <th>Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of orderDetails">
+              <th>{{item.Product.Name}}</th>
+              <th>{{item.Color.Name}}</th>
+              <th>{{item.Size.Name}}</th>
+              <td>{{item.Quantity | number}}</td>
+              <td>{{item.Price | number}}</td>
+              <td>{{item.Price * item.Quantity | number}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="form-group">
+          <div class="col-md-6 col-md-offset-3">
+          </div>
+          <div class="col-md-3">
+            <p><strong>Thành tiền : </strong> <span class="alert alert-link text-danger">{{totalCount}}</span> <strong> VNĐ</strong></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+

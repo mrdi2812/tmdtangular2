@@ -11,6 +11,7 @@ export const mainroutes : Routes = [
   {path:'product-category',loadChildren:'./product-category/product-category.module#ProductCategoryModule'},
   {path:'product',loadChildren:'./product/product.module#ProductModule'},
   {path:'product-size',loadChildren:'./product-size/product-size.module#ProductSizeModule'},
-  {path:'product-color',loadChildren:'./product-color/product-color.module#ProductColorModule'}
+  {path:'product-color',loadChildren:'./product-color/product-color.module#ProductColorModule'},
+  {path:'order',loadChildren:'./order/order.module#OrderModule'},
   ]}
 ]

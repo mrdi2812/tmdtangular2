@@ -17,7 +17,6 @@ export class UserComponent implements OnInit {
   public allRoles = [];
   public listRoles = [];
   public myRoles = [];
-  dropdownSettings = {};
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -40,14 +39,6 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     this.loadRoles();
-    this.dropdownSettings = {
-      singleSelection: false,
-      text: "Chọn quyền",
-      selectAllText: 'Chọn tất cả',
-      unSelectAllText: 'Bỏ chọn tất cả',
-      enableSearchFilter: true,
-      classes: "myclass custom-class"
-    };
   }
   //   onItemSelect(item:any){
   //     console.log(item);

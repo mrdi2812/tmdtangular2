@@ -1,0 +1,73 @@
+<div class="page-title">
+  <div class="title_left">
+    <h3>Danh sách đơn hàng</h3>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+      <input type="text" daterangepicker (selected)="selectedStartDate($event)" [options]="dateOptions" [(ngModel)]="filterStartDate"
+        name="startDate" class="form-control" placeholder="Từ ngày">
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+      <input type="text" daterangepicker (selected)="selectedEndDate($event)" [options]="dateOptions" [(ngModel)]="filterEndDate"
+        name="endDate" class="form-control" placeholder="Đến ngày">
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-12 form-group ">
+      <input type="text" class="form-control" name="filterCustomerName" [(ngModel)]="filterCustomerName" placeholder="Tên khách hàng...">
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+      <select class="form-control" name="filterPaymentStatus" [(ngModel)]="filterPaymentStatus">
+        <option value="">--Tất cả--</option>
+        <option value="PAID">Đã thanh toán</option>
+        <option value="UNPAID">Chưa thành toán</option>
+      </select>
+    </div>
+    <div class="col-md-4 col-sm-3 col-xs-12 form-group">
+      <button class="btn btn-primary" type="button" (click)="loadData()">Tìm kiếm</button>
+      <button class="btn btn-info" type="button" (click)="resetfilter()">Reset</button>
+      <button *ngIf="authenService.hasPermission('ORDER','create')" class="btn btn-success" routerLink="/main/order/add">Thêm mới</button>
+    </div>
+
+    <div class="x_content">
+      <table class="table table-bordered" *ngIf="listOrder&&listOrder.length>0">
+        <thead>
+          <tr>
+            <th>Tên khách hàng</th>
+            <th>Số điện thoại</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+            <th>#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listOrder">
+            <td>{{item.CustomerName}}</td>
+            <td>{{item.CustomerMobile}}</td>
+            <td>{{item.CreatedDate| date:'dd/MM/yyyy'}}</td>
+            <td class="text-center">
+                <span *ngIf="item.Status==true"><i class="glyphicon glyphicon-ok text-success"></i></span>
+                <span *ngIf="item.Status==flase"><i class="glyphicon glyphicon-remove text-danger"></i></span>
+            </td>
+            <td style="width: 20%">
+                <a class="btn btn-primary" routerLink="/main/order/detail/{{item.ID}}" data-toggle="tooltip" data-placement="top"
+                *ngIf="authenService.hasPermission('ORDER','update')"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top"  *ngIf="authenService.hasPermission('ORDER','delete')"
+                (click)="deleteOrder(item.ID)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="col-md-12" *ngIf="listOrder&&listOrder.length==0">
+        <div class="alert alert-danger">
+          <strong>Thông báo! </strong> Hiện tại chưa có đơn hàng nào trong hệ thống</div>
+      </div>
+      <pagination *ngIf="listOrder&&listOrder.length>0" [boundaryLinks]="true" [itemsPerPage]="pageSize" [totalItems]="totalItems" [(ngModel)]="pageIndex" (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+      </pagination>
+      <pre *ngIf="listOrder&&listOrder.length>0" class="card card-block card-header mb-3">Trang hiện tại: {{pageIndex}}</pre>
+
+    </div>
+  </div>
+</div>
