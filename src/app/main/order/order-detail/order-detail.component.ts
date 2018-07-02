@@ -4,6 +4,7 @@ import { NotificationService } from '../../../core/service/notification.service'
 import { UtilityService } from '../../../core/service/utility.service';
 import { MessageContstants } from '../../../core/common/message.constants';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import{SystemConstants} from '../../../core/common/system.constants';
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
@@ -13,12 +14,13 @@ export class OrderDetailComponent implements OnInit {
   public modeldata: any;
   public orderDetails: any[] = [];
   public totalCount: number = 0;
+  public orderId:number;
   constructor(private dataService: DataService, private utilityService: UtilityService,
     private notìicationService: NotificationService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
-      let orderId = params['id'];
+      this.orderId = params['id'];
       this.loadOrder(params['id']);
       this.loadOrderDetail(params['id']);
     });
@@ -40,6 +42,8 @@ export class OrderDetailComponent implements OnInit {
     }, error => this.dataService.handleError(error));
   }
   exportToExcel(){
-
+    this.dataService.get('/api/Order/exportExcel/' + this.orderId.toString()).subscribe((response: any) => {
+     window.open(SystemConstants.BASE_API + response.Message);
+    }, error => this.dataService.handleError(error));
   }
 }
