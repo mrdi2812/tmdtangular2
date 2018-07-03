@@ -78,7 +78,7 @@ export class FunctionComponent implements OnInit {
     this.modalAddEditPermission.show();
   }
   saveChange(valid: boolean) {
-    if (this.modeldata.Id == undefined) {
+    if (this.modeldata.ID == undefined) {
       this.dataService.post('/api/function/add', JSON.stringify(this.modeldata)).subscribe((response: any) => {
         this.loadData();
         this.modalAddEdit.hide();

@@ -13,12 +13,13 @@ import { DataService } from '../core/service/data.service';
 import { FormsModule } from '@angular/forms';
 import { SidebarMenuComponent } from '../shared/sidebar-menu/sidebar-menu.component';
 import { TopMenuComponent } from '../shared/top-menu/top-menu.component';
+import { SignalrService } from '../core/service/signalr.service';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(mainroutes),FormsModule,
   ],
-  providers:[AuthenService,UtilityService,DataService],
+  providers:[AuthenService,UtilityService,DataService,SignalrService],
   declarations: [MainComponent,SidebarMenuComponent,TopMenuComponent]
 })
 export class MainModule { }
